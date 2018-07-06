@@ -1,10 +1,7 @@
 var http = require(`http`);
 var onRequest = require(`./functions`);
-var fs = require(`fs`);
 
 
 http.createServer(onRequest).listen(8888);
-
-
 
 console.log("Server is now running");
