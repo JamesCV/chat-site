@@ -19,7 +19,8 @@
             }
 
             .topheader {
-                margin-left:30%;
+                margin-left:5%;
+                margin-top: 2%;
                 border-left-style:groove;
                 border-top-style:groove;
                 border-top-left-radius: 50px;
@@ -28,16 +29,72 @@
                 padding-left: 10px;
                 
             }
-        
+        #chatButton {
+            width: 8%;
+            height: 3.5vh;
+            position: relative;
+            bottom: 0vh;;
+        }
+
+        #chatInput {
+            width: 80%;
+            height: 3vh;
+            margin-bottom: 5px;
+        }
+
+        #chatForm {
+            font-size: 25px;
+            font-family: Arial, Helvetica, sans-serif;
+            margin-top: 5%;
+            margin-left: 5%;
+            
+        }
+
+        #textBox {
+            margin-left: 5%;
+            margin-top: 3%;
+            border-style: groove;
+            border-color: #4f2a26;
+            border-width: 5px;
+            background-color:#894b44;
+            height: 65vh;
+            width: 120vh;
+            color: black;
+            overflow: hidden;
+        }
+
         </style>
 
     </head>
     <body>
-        <div class="topheader">
+        <div class = "topheader">
                 <h1>    
                         Welcome to my Chat Website
                     </h1>
         </div>      
 
+        <div id = "textBox">
+            
+        </div>
+
+        <form id = "chatForm">
+            Chat: <input type="text" value="" id="chatInput" name="sentMessage">
+            <button id="chatButton" onclick="onSent('textBox');return false;"> Send </button>
+
+        <script>
+            function onSent (textBox){
+                var messages = [];
+                var msg = document.getElementById('chatInput').value;
+                var txtNode = document.createTextNode(msg);
+                var elementNode = document.createElement("p");
+                
+                elementNode.appendChild(txtNode);
+                document.getElementById('textBox').appendChild(elementNode);
+                document.getElementById('chatInput').value = ("");
+            
+                
+            }
+        </script>
+        </form>
     </body>
 </html>

@@ -9,4 +9,6 @@ if (app.get('/', onRequest)) {
     send404Request();
 }
 
+
+
 console.log("Server is now running");

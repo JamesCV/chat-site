@@ -11,11 +11,6 @@ var send404Request = function (req, res){
     res.write("Page doesn't exist dumbass");
 }
 
-var sendRequest = function (req, res){
-    req.writeHead(200, HTMLHeader);
-    req.write(req);
-}
-    
 
 module.exports = send404Request;
 module.exports = onRequest;
