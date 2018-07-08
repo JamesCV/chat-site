@@ -77,6 +77,8 @@
             
         </div>
 
+        
+
         <form id = "chatForm">
             Chat: <input type="text" value="" id="chatInput" name="sentMessage">
             <button id="chatButton" onclick="onSent('textBox');return false;"> Send </button>
@@ -91,9 +93,17 @@
                 elementNode.appendChild(txtNode);
                 document.getElementById('textBox').appendChild(elementNode);
                 document.getElementById('chatInput').value = ("");
-            
                 
+                sendToServer("jam boy", msg);
+
             }
+
+            function sendToServer(name, message) {
+                var xmlHttp = new XMLHttpRequest(); 
+                xmlHttp.open("GET", "/postMessage?name=" + name + "&message=" + message, false);
+                xmlHttp.send(null)
+            }
+
         </script>
         </form>
     </body>
