@@ -5,7 +5,10 @@ var send404Request = require('./functions');
 var messages = [];
 
 
-app.get('/', onRequest);
+app.get('/', function (req, res) {
+    res.writeHead(200, HTMLHeader);
+    fs.createReadStream("./index.html").pipe(res);    
+})
 app.listen(8888);
 
 
@@ -18,5 +21,7 @@ app.get('/postMessage', function(req, res) {
 app.get('/getMessage', function (req, res) {
     res.end(JSON.stringify(messages));
 })
+
+
 
 console.log("Server is now running");
