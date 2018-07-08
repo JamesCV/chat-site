@@ -89,12 +89,15 @@
                 sendToServer("jam boy", msg);
 
                 var messageArray = getFromServer("/getMessage");
-                var txtNode = document.createTextNode(messageArray);
+                var refinedArray = messageArray.split(',');
+                counter = (refinedArray.length - 1)
+                var lastItem = refinedArray[counter].split('"')[1].split('"')[0];
+
+                var txtNode = document.createTextNode(lastItem);
                 var elementNode = document.createElement("p");
                 elementNode.appendChild(txtNode);
                 document.getElementById('textBox').appendChild(elementNode);
-
-
+                
                 
                 document.getElementById('chatInput').value = ("");
             
@@ -113,6 +116,8 @@
                 var msgData = xmlHttp.responseText;
                 return msgData;
             }        
+
+
 
 
         </script>
