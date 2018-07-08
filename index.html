@@ -46,14 +46,14 @@
         #chatForm {
             font-size: 25px;
             font-family: Arial, Helvetica, sans-serif;
-            margin-top: 5%;
+            margin-top: 3%;
             margin-left: 5%;
             
         }
 
         #textBox {
             margin-left: 5%;
-            margin-top: 3%;
+            margin-top: 2%;
             border-style: groove;
             border-color: #4f2a26;
             border-width: 5px;
@@ -78,25 +78,26 @@
             
         </div>
 
-        
-
         <form id = "chatForm">
             Chat: <input type="text" value="" id="chatInput" name="sentMessage">
             <button id="chatButton" onclick="onSent('textBox');return false;"> Send </button>
 
         <script>
+            var messageArray = [];
             function onSent (textBox){
-                var messages = [];
                 var msg = document.getElementById('chatInput').value;
-                var txtNode = document.createTextNode(msg);
-                var elementNode = document.createElement("p");
-                
-                elementNode.appendChild(txtNode);
-                document.getElementById('textBox').appendChild(elementNode);
-                document.getElementById('chatInput').value = ("");
-                
                 sendToServer("jam boy", msg);
 
+                var messageArray = getFromServer("/getMessage");
+                var txtNode = document.createTextNode(messageArray);
+                var elementNode = document.createElement("p");
+                elementNode.appendChild(txtNode);
+                document.getElementById('textBox').appendChild(elementNode);
+
+
+                
+                document.getElementById('chatInput').value = ("");
+            
             }
 
             function sendToServer(name, message) {
@@ -105,7 +106,17 @@
                 xmlHttp.send(null)
             }
 
+            function getFromServer(myUrl) {
+                var xmlHttp = new XMLHttpRequest(); 
+                xmlHttp.open("GET", myUrl, false);
+                xmlHttp.send(null)
+                var msgData = xmlHttp.responseText;
+                return msgData;
+            }        
+
+
         </script>
+
         </form>
     </body>
 </html>
