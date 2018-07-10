@@ -27,13 +27,16 @@
                 border-left-width: 6px;
                 border-color: #f74331;
                 padding-left: 10px;
-                
+                position: relative;
+                height: 150px;
             }
         #chatButton {
             width: 8%;
             height: 3.5vh;
             position: relative;
-            bottom: 0vh;;
+            bottom: 0vh;
+            background-color: #f7d5d2;
+            border-color: #f7d5d2;
         }
 
         #chatInput {
@@ -41,12 +44,13 @@
             height: 3vh;
             margin-bottom: 5px;
             background-color: #eac0bb;
+            border-color: #eac0bb;
         }
 
         #chatForm {
             font-size: 25px;
             font-family: Arial, Helvetica, sans-serif;
-            margin-top: 3%;
+            margin-top: 2%;
             margin-left: 5%;
             
         }
@@ -59,26 +63,43 @@
             border-width: 5px;
             background-color:#eac0bb;
             height: 65vh;
-            width: 120vh;
+            width: 86%;
             color: black;
             overflow: hidden;
             padding-left: 15px;
+            overflow-y: scroll;
+            overflow-y: auto;
+        }
+
+        #changeName {
+            height: 70px;
+            width: 180px;
+            margin-left: 82%;  
+            position: relative;
+            bottom: 135px;
+            background-color: #f7d5d2;
+            border-color: #f7d5d2;
         }
 
         </style>
 
     </head>
-    <body onload="messageRefresh()">
+    <body onload="getName()">
 
         <div class = "topheader">
                 <h1>    
                         Welcome to my Chat Website
-                    </h1>
+                </h1>
+
+                <button id="changeName" onclick="refreshName()">
+                        Change Name
+                </button>
         </div>      
 
         <div id = "textBox">
-            
+
         </div>
+
 
         <form id = "chatForm">
             Chat: <input type="text" value="" id="chatInput" name="sentMessage">
@@ -86,21 +107,13 @@
 
         <script>
             var messageArray = [];
-            var name = ("");
-            function onSent (textBox){
+            
+                function onSent (textBox){
                 var msg = document.getElementById('chatInput').value;
-                sendToServer("jam boy", msg);
+                document.getElementById('textBox').innerHTML = '';
+                sendToServer(name, msg);
 
-                var messageArray = getFromServer("/getMessage");
-                var refinedArray = messageArray.split(',');
-                counter = (refinedArray.length - 1)
-                var lastItem = refinedArray[counter].split('"')[1].split('"')[0];
-
-                var txtNode = document.createTextNode(name + " :" + lastItem);
-                var elementNode = document.createElement("p");
-                elementNode.appendChild(txtNode);
-                document.getElementById('textBox').appendChild(elementNode);
-                
+                messageRefresh();
                 
                 document.getElementById('chatInput').value = ("");
             
@@ -115,25 +128,46 @@
             function getFromServer(myUrl) {
                 var xmlHttp = new XMLHttpRequest(); 
                 xmlHttp.open("GET", myUrl, false);
-                xmlHttp.send(null)
-                var msgData = xmlHttp.responseText;
-                return msgData;
+                xmlHttp.send(null);
+                return xmlHttp.responseText;
             }        
 
             function messageRefresh() {
-                var messageArray = getFromServer("/getMessage");
-                var refinedArray = messageArray.split(',');
-                counter = (refinedArray.length)
+                var messages = JSON.parse(getFromServer("/getMessage"));
+                document.getElementById('textBox').innerHTML = "";
+                console.log(messages);
 
-                for (x = 0; x < counter; x++) {
-                    var item = refinedArray[x].split('"')[1].split('"')[0];
-                    var txtNode = document.createTextNode(name + " :" + item);
+                for (x = 0; x < messages.length; x++) {
+                    var name = messages[x].name;
+                    var message = messages[x].message;
+                    var txtNode = document.createTextNode(name + " :" + message);
                     var elementNode = document.createElement("p");
                     elementNode.appendChild(txtNode);
+                    elementNode.className = "msg";
                     document.getElementById('textBox').appendChild(elementNode);
                 }
-
+                
+                var divBox = document.getElementById('textBox');
+                divBox.scrollTop = divBox.scrollHeight;
             }
+
+            function getName() {
+                if (document.cookie.indexOf("username=") == -1) {
+                    name = prompt("Please enter your name");
+                    document.cookie = "username=" + name;
+                } else {
+                    name = document.cookie.split("username=")[1].split(";")[0];
+                }
+                messageRefresh();
+            }
+
+            function refreshName() {
+                name = prompt("Please enter your name");
+                document.cookie = "username=" + name;
+            }
+
+
+            // setInterval(messageRefresh, 100);
 
 
 

@@ -11,30 +11,16 @@ app.get('/', function (req, res) {
 })
 app.listen(8888);
 
-
 app.get('/postMessage', function(req, res) {
     messages.push(req.query);
-    var counter = (messages.length - 1);
-    var newestMsg = getMsg(counter);
-    messageArray.push(newestMsg);
-    console.log(newestMsg);
+    var message = req.query.message;
+    var name = req.query.name;
+    messageArray.push(name + ": " + message);
     res.end();
   })
 
 app.get('/getMessage', function (req, res) {
-    res.end(JSON.stringify(messageArray));
+    res.end(JSON.stringify(messages));
 })
-
-
-
-var getMsg = function (item) {
-    var rawDate = messages[item];
-    var data = JSON.stringify(rawDate);
-    var curItem = data.split('"message":"')[1];
-    var dataItem = curItem.split('"}')[0];
-    return dataItem;
-}
-
-
 
 console.log("Server is now running");
