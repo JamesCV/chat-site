@@ -1,2 +1,3 @@
 # chat-site
-a locally hosted chat website
+
+a locally hosted chat website using HTTP requests
