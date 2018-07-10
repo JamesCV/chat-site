@@ -62,12 +62,14 @@
             width: 120vh;
             color: black;
             overflow: hidden;
+            padding-left: 15px;
         }
 
         </style>
 
     </head>
-    <body>
+    <body onload="messageRefresh()">
+
         <div class = "topheader">
                 <h1>    
                         Welcome to my Chat Website
@@ -84,6 +86,7 @@
 
         <script>
             var messageArray = [];
+            var name = ("");
             function onSent (textBox){
                 var msg = document.getElementById('chatInput').value;
                 sendToServer("jam boy", msg);
@@ -93,7 +96,7 @@
                 counter = (refinedArray.length - 1)
                 var lastItem = refinedArray[counter].split('"')[1].split('"')[0];
 
-                var txtNode = document.createTextNode(lastItem);
+                var txtNode = document.createTextNode(name + " :" + lastItem);
                 var elementNode = document.createElement("p");
                 elementNode.appendChild(txtNode);
                 document.getElementById('textBox').appendChild(elementNode);
@@ -116,6 +119,21 @@
                 var msgData = xmlHttp.responseText;
                 return msgData;
             }        
+
+            function messageRefresh() {
+                var messageArray = getFromServer("/getMessage");
+                var refinedArray = messageArray.split(',');
+                counter = (refinedArray.length)
+
+                for (x = 0; x < counter; x++) {
+                    var item = refinedArray[x].split('"')[1].split('"')[0];
+                    var txtNode = document.createTextNode(name + " :" + item);
+                    var elementNode = document.createElement("p");
+                    elementNode.appendChild(txtNode);
+                    document.getElementById('textBox').appendChild(elementNode);
+                }
+
+            }
 
 
 
